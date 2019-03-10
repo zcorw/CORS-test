@@ -5,15 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>CORS 演示</title>
 </head>
 
 <body>
     <p>简单请求没有返回 Access-Control-Allow-Origin 请求头：<a href="javascript:void(0)" id="btn_simple_fail">发起请求</a></p>
     <p>简单请求返回 Access-Control-Allow-Origin 请求头：<a href="javascript:void(0)" id="btn_simple_success">发起请求</a></p>
     <p>预检请求没有返回请求头：<a href="javascript:void(0)" id="btn_preflighted_fail">发起请求</a></p>
-    <p>预检请求不允许POST请求：<a href="javascript:void(0)" id="btn_preflighted_fail_post">发起请求</a></p>
-    <p>预检请求新增加一个字段：<a href="javascript:void(0)" id="btn_preflighted_fail_field">发起请求</a></p>
+    <p>预检请求新增加一个字段，服务端未允许该字段：<a href="javascript:void(0)" id="btn_preflighted_fail_field">发起请求</a></p>
     <p>预检请求正常返回：<a href="javascript:void(0)" id="btn_preflighted_success">发起请求</a></p>
     <p>请求携带Cookies, Access-Control-Allow-Origin 值为 *：<a href="javascript:void(0)" id="btn_cookies_fail_origin">发起请求</a></p>
     <p>请求携带Cookies, 响应未携带Access-Control-Allow-Credentials：<a href="javascript:void(0)" id="btn_cookies_fail_credentials">发起请求</a></p>
@@ -21,7 +20,7 @@
     <script>
         function simpleRequest(type) {
             var invocation = new XMLHttpRequest();
-            var url = 'http://127.0.0.1:3000/simple/' + type;
+            var url = 'http://server.com/simple/' + type;
             invocation.open('GET', url, true);
             invocation.onload = function () {
                 if (invocation.readyState === invocation.DONE) {
@@ -34,7 +33,7 @@
         }
         function preflightedRequest(action, type) {
             var invocation = new XMLHttpRequest();
-            var url = 'http://127.0.0.1:3000/preflighted/' + action;
+            var url = 'http://server.com/preflighted/' + action;
             url += type ? `/${type}` : '';
             invocation.open('POST', url, true);
             invocation.setRequestHeader("CONTENT-TYPE", "application/json");
@@ -51,7 +50,7 @@
         function cookiesRequest(action, type) {
             document.cookie="test=true";
             var invocation = new XMLHttpRequest();
-            var url = 'http://127.0.0.1:3000/cookies/' + action;
+            var url = 'http://server.com/cookies/' + action;
             url += type ? `/${type}` : '';
             invocation.open('GET', url, true);
             invocation.withCredentials = true;
@@ -75,9 +74,6 @@
         });
         document.getElementById("btn_preflighted_fail").addEventListener("click", function () {
             preflightedRequest("fail");
-        });
-        document.getElementById("btn_preflighted_fail_post").addEventListener("click", function () {
-            preflightedRequest("fail", "post");
         });
         document.getElementById("btn_preflighted_fail_field").addEventListener("click", function () {
             preflightedRequest("fail", "field");

@@ -22,12 +22,7 @@ http.createServer(function (req, res) {
                 .setHeader("Access-Control-Allow-Headers", "content-type")
                 .setHeader("Access-Control-Allow-Origin", "*");
         } else if (action == "fail") {
-            if (type == "post") {
-                response(res)
-                    .setHeader("Access-Control-Allow-Methods", "GET")
-                    .setHeader("Access-Control-Allow-Headers", "content-type")
-                    .setHeader("Access-Control-Allow-Origin", "*");
-            } else if (type == "field") {
+            if (type == "field") {
                 response(res)
                     .setHeader("Access-Control-Allow-Methods", "GET, POST")
                     .setHeader("Access-Control-Allow-Headers", "content-type")
