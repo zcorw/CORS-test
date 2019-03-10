@@ -53,13 +53,13 @@ http.createServer(function (req, res) {
                     .setHeader("Access-Control-Allow-Headers", "content-type")
                     .setHeader("Access-Control-Allow-Origin", "*")
                     .setHeader("Access-Control-Allow-Credentials", "true")
-                    .send(result);
+                    .send();
             } else if (type == "credentials") {
                 response(res)
                     .setHeader("Access-Control-Allow-Methods", "GET, POST")
                     .setHeader("Access-Control-Allow-Headers", "content-type")
                     .setHeader("Access-Control-Allow-Origin", "http://client.com")
-                    .send(result);
+                    .send();
             }
 
         } else if (action == "set") {
