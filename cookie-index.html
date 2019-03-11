@@ -16,8 +16,7 @@
     <script>
         function cookiesRequest(action, type) {
             var invocation = new XMLHttpRequest();
-            var url = 'http://server.com/cookies/' + action;
-            url += type ? `/${type}` : '';
+            var url = 'http://server.com/' + action;
             invocation.open('GET', url, true);
             invocation.withCredentials = true;
             invocation.onload = function () {
@@ -31,7 +30,7 @@
         }
         function setCookie(value) {
             var invocation = new XMLHttpRequest();
-            var url = 'http://server.com/cookies/set';
+            var url = 'http://server.com/set';
             invocation.open('POST', url, true);
             invocation.withCredentials = true;
             invocation.send(value);
@@ -40,10 +39,10 @@
             cookiesRequest("success");
         });
         document.getElementById("btn_cookies_fail_origin").addEventListener("click", function () {
-            cookiesRequest("fail", "origin");
+            cookiesRequest("origin");
         });
         document.getElementById("btn_cookies_fail_credentials").addEventListener("click", function () {
-            cookiesRequest("fail", "credentials");
+            cookiesRequest("credentials");
         });
         document.getElementById("btn_set_cookie").addEventListener("click", function() {
             var cookie_value = document.getElementById("cookie_text").value;

@@ -1,4 +1,4 @@
-module.export = function response(res) {
+module.exports = function response(res) {
     const me = {
         setHeader: (key, value) => {
             res.setHeader(key, value);
