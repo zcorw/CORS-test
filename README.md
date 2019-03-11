@@ -153,13 +153,13 @@ Hello, World
 ### 预检请求新增加一个字段，服务端未允许该字段
 ```
 OPTIONS /preflighted/fail/field HTTP/1.1
-Host: 127.0.0.1:3000
+Host: server.com
 Access-Control-Request-Method: POST
-Origin: http://127.0.0.1:4000/
+Origin: http://client.com/
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36
 Access-Control-Request-Headers: content-type,x-field
 Accept: */*
-Referer: http://127.0.0.1:4000/
+Referer: http://client.com/
 Accept-Encoding: gzip, deflate
 Accept-Language: zh-CN,zh;q=0.9
 Connection: keep-alive
@@ -180,6 +180,12 @@ Hello, World
 
 *Request header field x-field is not allowed by Access-Control-Allow-Headers in preflight response.*
 
+___
+
+因为 Cookie 设置 domain 无法使用 IP，所以这里我采用将 server.com 重定向到 127.0.0.1:3000，client.com 重定向到 127.0.0.1:4000。我重定向使用的是 charles 的 map remote 功能。
+
+**为了与上面案例区分，我将 Cookie 相关案例独立出来。请执行 node cookie.js，并做好重定向后以 client.com 访问网页。**
+
 ### 请求携带Cookies正常返回
 CORS 请求默认不会携带 Cookie，想要让浏览器带上 Cookie 必须在 AJAX 设置: 
 
@@ -190,11 +196,11 @@ invocation.withCredentials = true;
 
 ```
 GET /cookies/success HTTP/1.1
-Host: 127.0.0.1:3000
-Origin: http://127.0.0.1:4000/
+Host: server.com
+Origin: http://client.com/
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36
 Accept: */*
-Referer: http://127.0.0.1:4000/
+Referer: http://client.com/
 Accept-Encoding: gzip, deflate
 Accept-Language: zh-CN,zh;q=0.9
 Cookie: server=123
@@ -204,7 +210,7 @@ Connection: keep-alive
 HTTP/1.1 200 OK
 Access-Control-Allow-Methods: GET, POST
 Access-Control-Allow-Headers: content-type
-Access-Control-Allow-Origin: http://127.0.0.1:4000
+Access-Control-Allow-Origin: http://client.com
 Access-Control-Allow-Credentials: true
 Content-Type: text/plain
 Date: Sun, 10 Mar 2019 15:12:42 GMT

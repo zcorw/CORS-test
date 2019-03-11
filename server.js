@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const response = require('./response.js');
 
 http.createServer(function (req, res) {
     res.writeHead(200, { "Content-Type": "text/html" });
@@ -81,19 +82,3 @@ http.createServer(function (req, res) {
         response(res).send(result);
     }
 }).listen(3000);
-
-function response(res) {
-    const me = {
-        setHeader: (key, value) => {
-            res.setHeader(key, value);
-            return me;
-        },
-        send: (value) => {
-            res.statusCode = 200;
-            res.setHeader("Content-Type", "text/plain");
-            value && res.write(value);
-            res.end();
-        }
-    }
-    return me;
-}

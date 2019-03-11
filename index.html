@@ -14,10 +14,6 @@
     <p>预检请求正常返回：<a href="javascript:void(0)" id="btn_preflighted_success">发起请求</a></p>
     <p>预检请求没有返回请求头：<a href="javascript:void(0)" id="btn_preflighted_fail">发起请求</a></p>
     <p>预检请求新增加一个字段，服务端未允许该字段：<a href="javascript:void(0)" id="btn_preflighted_fail_field">发起请求</a></p>
-    <p>设置Cookies<input type="text" id="cookie_text" value="" /><a href="javascript:void(0)" id="btn_set_cookie">设置cookie</a></p>
-    <p>请求携带Cookies正常返回：<a href="javascript:void(0)" id="btn_cookies_success">发起请求</a></p>
-    <p>请求携带Cookies, Access-Control-Allow-Origin 值为 *：<a href="javascript:void(0)" id="btn_cookies_fail_origin">发起请求</a></p>
-    <p>请求携带Cookies, 响应未携带Access-Control-Allow-Credentials：<a href="javascript:void(0)" id="btn_cookies_fail_credentials">发起请求</a></p>
     <script>
         function simpleRequest(type) {
             var invocation = new XMLHttpRequest();
@@ -48,28 +44,6 @@
             };
             invocation.send("{a: 1}");       
         }
-        function cookiesRequest(action, type) {
-            var invocation = new XMLHttpRequest();
-            var url = 'http://server.com/cookies/' + action;
-            url += type ? `/${type}` : '';
-            invocation.open('GET', url, true);
-            invocation.withCredentials = true;
-            invocation.onload = function () {
-                if (invocation.readyState === invocation.DONE) {
-                    if (invocation.status === 200) {
-                        invocation.responseText && alert(invocation.responseText);
-                    }
-                }
-            };
-            invocation.send();
-        }
-        function setCookie(value) {
-            var invocation = new XMLHttpRequest();
-            var url = 'http://server.com/cookies/set';
-            invocation.open('POST', url, true);
-            invocation.withCredentials = true;
-            invocation.send(value);
-        }
         document.getElementById("btn_simple_fail").addEventListener("click", function () {
             simpleRequest("fail");
         });
@@ -85,23 +59,6 @@
         document.getElementById("btn_preflighted_fail_field").addEventListener("click", function () {
             preflightedRequest("fail", "field");
         });
-        document.getElementById("btn_cookies_success").addEventListener("click", function () {
-            cookiesRequest("success");
-        });
-        document.getElementById("btn_cookies_fail_origin").addEventListener("click", function () {
-            cookiesRequest("fail", "origin");
-        });
-        document.getElementById("btn_cookies_fail_credentials").addEventListener("click", function () {
-            cookiesRequest("fail", "credentials");
-        });
-        document.getElementById("btn_set_cookie").addEventListener("click", function() {
-            var cookie_value = document.getElementById("cookie_text").value;
-            if (cookie_value) {
-                setCookie(cookie_value);
-            } else {
-                alert("请任意输入一个值");
-            }
-        })
     </script>
 </body>
 
